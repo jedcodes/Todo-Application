@@ -1,0 +1,18 @@
+.todo {
+	border: 1px solid #ccc;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+.todo__list {
+	list-style: none;
+	padding: 0;
+}
+
+.todo__icons {
+	margin-top: 15px;
+}
+
+.MuiSvgIcon-root {
+	color: #ff5821;
+}
