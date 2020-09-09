@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import useForm from "../../Hooks/useForm";
 import "../../Styles/TodoList/EditTodo.css";
+import { db } from "../../Firebase/Firebase";
 
-const EditTodo = ({ tasks, id, updatedTask, toggleState }) => {
-	const [] = useState();
+const EditTodo = ({ tasks, id, toggleState }) => {
 	const [ state, changeHandler ] = useForm(tasks);
 
 	const submitEditedTaskHandler = event => {
 		event.preventDefault();
-		updatedTask(id, state);
+		db.collection("todos").doc(id).set(
+			{
+				task: state
+			},
+			{ merge: true }
+		);
 		toggleState();
 	};
 

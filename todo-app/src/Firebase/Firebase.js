@@ -1,3 +1,5 @@
+import firebase from "firebase";
+
 const firebaseConfig = {
 	apiKey: "AIzaSyC5Q1QwCZsjGKOI5TMRY6x-O3MHxowirY0",
 	authDomain: "todo-application-b6d50.firebaseapp.com",
@@ -13,4 +15,4 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const db = firebaseApp.firestore();
 
-export default db;
+export { db };

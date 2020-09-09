@@ -2,42 +2,32 @@ import React, { useEffect, useState } from "react";
 import "../../Styles/TodoList/TodoList.css";
 import Todo from "../Todos/Todo";
 import TodoForm from "./TodoForm";
+import { db } from "../../Firebase/Firebase";
+import firebase from "firebase";
 
 const TodoList = () => {
-	const [ todos, setTodos ] = useState([
-		{ task: "Walk The Dogs", id: 1, isCompleted: false },
-		{ task: "Buy Shoes", id: 2, isCompleted: false },
-		{ task: "Walk The Dogs", id: 3, isCompleted: false }
-	]);
+	const [ todos, setTodos ] = useState([]);
+
+	useEffect(() => {
+		db.collection("todos").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+			console.log(snapshot.docs.map(doc => ({ todo: doc.data().task, id: doc.id })));
+			setTodos(snapshot.docs.map(doc => ({ todo: doc.data().task, id: doc.id })));
+		});
+	}, []);
 
 	const addNewTask = newTask => {
 		// Add New Todos To Database
-		setTodos([ ...todos, { id: 4, task: newTask, completed: false } ]);
-	};
-
-	const updatedTasks = (id, editedTask) => {
-		// Add Updated Task To Database
-		const updatedTask = todos.map(todo => {
-			if (todo.id === id) {
-				return { ...todo, task: editedTask };
-			}
-			return todo;
+		db.collection("todos").add({
+			task: newTask,
+			isCompleted: false,
+			timestamp: firebase.firestore.FieldValue.serverTimestamp()
 		});
-		setTodos(updatedTask);
-	};
-
-	const deleteTasks = id => {
-		// Delete Task From Database
-		const deletedTask = todos.filter(todo => todo.id !== id);
-		setTodos(deletedTask);
 	};
 
 	return (
 		<div className="todolist">
 			{todos.map(todo => {
-				return (
-					<Todo key={todo.id} tasks={todo.task} id={todo.id} deleteTask={deleteTasks} updatedTask={updatedTasks} />
-				);
+				return <Todo key={todo.id} tasks={todo.todo} id={todo.id} />;
 			})}
 			<TodoForm addTask={addNewTask} />
 		</div>
