@@ -1,4 +1,6 @@
 .todolist {
-	margin: 0 auto;
-	width: 50%;
+	margin: 4em auto 0 auto;
+	width: 80%;
+	border: 1px solid #ccc;
+	overflow: scroll;
 }

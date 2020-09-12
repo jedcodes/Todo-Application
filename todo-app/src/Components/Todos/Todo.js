@@ -7,8 +7,11 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import useToggle from "../../Hooks/useToggle";
 import EditTodo from "./EditTodo";
 import { db } from "../../Firebase/Firebase";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import Popup from "reactjs-popup";
+import UndoIcon from "@material-ui/icons/Undo";
 
-const Todo = ({ tasks, id }) => {
+const Todo = ({ tasks, id, completed }) => {
 	const [ toggle, toggleState ] = useToggle(false);
 
 	const deleteTasksHandler = () => {
@@ -16,11 +19,20 @@ const Todo = ({ tasks, id }) => {
 		db.collection("todos").doc(id).delete();
 	};
 
-	const completedTasks = () => {
+	const completedTaskHandler = () => {
 		// Edit Task Completion In Database
 		db.collection("todos").doc(id).set(
 			{
-				isCompleted: toggleState()
+				isCompleted: !toggle
+			},
+			{ merge: true }
+		);
+	};
+	const undoCompletionHandler = () => {
+		// Edit Task Completion In Database
+		db.collection("todos").doc(id).set(
+			{
+				isCompleted: false
 			},
 			{ merge: true }
 		);
@@ -29,18 +41,30 @@ const Todo = ({ tasks, id }) => {
 	return (
 		<div className="todo">
 			{!toggle ? (
-				<ul className="todo__list">
+				<ul className={`todo__list ${completed && "todo__completed"}`}>
 					<h5>{tasks}</h5>
 					<div className="todo__icons">
-						<IconButton onClick={completedTasks}>
-							<DoneIcon />
-						</IconButton>
-						<IconButton onClick={toggleState}>
-							<EditIcon />
-						</IconButton>
-						<IconButton onClick={deleteTasksHandler}>
-							<DeleteIcon />
-						</IconButton>
+						{
+							<Popup
+								position="right bottom"
+								closeOnDocumentClick
+								trigger={open => <IconButton>{open ? <MoreHorizIcon /> : <MoreHorizIcon />}</IconButton>}
+							>
+								<IconButton>
+									{completed ? (
+										<UndoIcon onClick={undoCompletionHandler} />
+									) : (
+										<DoneIcon onClick={completedTaskHandler} />
+									)}
+								</IconButton>
+								<IconButton onClick={toggleState}>
+									<EditIcon />
+								</IconButton>
+								<IconButton onClick={deleteTasksHandler}>
+									<DeleteIcon />
+								</IconButton>
+							</Popup>
+						}
 					</div>
 				</ul>
 			) : (

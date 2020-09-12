@@ -4,14 +4,19 @@ import Todo from "../Todos/Todo";
 import TodoForm from "./TodoForm";
 import { db } from "../../Firebase/Firebase";
 import firebase from "firebase";
+import Fade from "react-reveal/Fade";
+import TransitionGroup from "react-transition-group/TransitionGroup";
 
 const TodoList = () => {
 	const [ todos, setTodos ] = useState([]);
 
+	// Fetch Data Stored In Firebase Database And Display Results On Screen Once Component Loads
 	useEffect(() => {
 		db.collection("todos").orderBy("timestamp", "desc").onSnapshot(snapshot => {
-			console.log(snapshot.docs.map(doc => ({ todo: doc.data().task, id: doc.id })));
-			setTodos(snapshot.docs.map(doc => ({ todo: doc.data().task, id: doc.id })));
+			const todoObject = snapshot.docs.map(doc => ({ todo: doc.data(), id: doc.id }));
+
+			console.log(todoObject);
+			setTodos(todoObject);
 		});
 	}, []);
 
@@ -24,11 +29,31 @@ const TodoList = () => {
 		});
 	};
 
+	const todoSummary = () => {
+		const completedTodos = todos.filter(todo => {
+			return todo.todo.isCompleted === true;
+		});
+		return completedTodos.length;
+	};
+
+	const groupProps = {
+		appear: false,
+		enter: true,
+		exit: true
+	};
+
 	return (
 		<div className="todolist">
-			{todos.map(todo => {
-				return <Todo key={todo.id} tasks={todo.todo} id={todo.id} />;
-			})}
+			<h5>Task(s) Completed: {todoSummary()}</h5>
+			<TransitionGroup {...groupProps}>
+				{todos.map(todo => {
+					return (
+						<Fade key={todo.id} collapse top>
+							<Todo key={todo.id} tasks={todo.todo.task} id={todo.id} completed={todo.todo.isCompleted} />
+						</Fade>
+					);
+				})}
+			</TransitionGroup>
 			<TodoForm addTask={addNewTask} />
 		</div>
 	);

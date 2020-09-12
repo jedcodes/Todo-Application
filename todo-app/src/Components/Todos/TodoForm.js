@@ -13,7 +13,7 @@ const TodoForm = ({ addTask }) => {
 
 	return (
 		<form className="todoForm" onSubmit={submitHandler}>
-			<input type="text" name="task" value={state} onChange={changeHandler} placeholder="Enter Task..." />
+			<input value={state} onChange={changeHandler} color="secondary" placeholder="Enter Task..." />
 			<button type="submit">Add Task</button>
 		</form>
 	);

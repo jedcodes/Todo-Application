@@ -1,0 +1,35 @@
+.todoForm {
+	width: 60%;
+	padding: 1em;
+	margin: 0 auto;
+}
+
+.todoForm > input {
+	width: 70%;
+	background: none;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: 1px solid #39bf73;
+	color: white;
+}
+
+.todoForm > button {
+	display: none;
+}
+
+::placeholder {
+	/* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: white;
+	opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+	/* Internet Explorer 10-11 */
+	color: white;
+}
+
+::-ms-input-placeholder {
+	/* Microsoft Edge */
+	color: white;
+}

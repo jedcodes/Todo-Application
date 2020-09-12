@@ -18,12 +18,10 @@ const EditTodo = ({ tasks, id, toggleState }) => {
 	};
 
 	return (
-		<div className="editTodo">
-			<form onSubmit={submitEditedTaskHandler}>
-				<input type="text" name="task" value={state} onChange={changeHandler} />
-				<button type="submit">Edit Task</button>
-			</form>
-		</div>
+		<form className="editTodo" onSubmit={submitEditedTaskHandler}>
+			<input type="text" name="task" value={state} onChange={changeHandler} />
+			<button type="submit">Edit Task</button>
+		</form>
 	);
 };
 

@@ -1,12 +1,15 @@
 .todo {
+	margin: 0 auto 20px auto;
+	width: 50%;
 	border: 1px solid #ccc;
 	padding: 10px;
-	margin-bottom: 20px;
 }
 
 .todo__list {
 	list-style: none;
 	padding: 0;
+	display: flex;
+	justify-content: space-between;
 }
 
 .todo__icons {
@@ -15,4 +18,22 @@
 
 .MuiSvgIcon-root {
 	color: #ff5821;
+}
+
+.todo > .todo__completed {
+	color: gray;
+	text-decoration: line-through;
+}
+
+.popup-content {
+	margin: auto;
+	background: rgba(0, 0, 0, 0.45);
+	width: 10%;
+	padding: 5px;
+	border: 1px solid #39bf73;
+	border-radius: 5px;
+}
+
+.popup-arrow {
+	color: #39bf73;
 }
